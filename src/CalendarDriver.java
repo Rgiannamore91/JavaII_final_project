@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class CalendarDriver{
 	public static void main (String[] args) {
 		int year = 2023;
-		String input = "February";
+		String input = "December";
 		Month[] months = {
 			new Month(1, "January", 31),
 			new Month(2, "February", 28),
@@ -27,42 +27,12 @@ public class CalendarDriver{
 			monthList.add(month);
 		}
 		Month targetMonth = null;
-		if(input == monthList.get(0).getMonthName()){
-			targetMonth = monthList.get(0);
+
+		int index = monthList.indexOf(new Month(0, input, 0));
+		if(index >=0){
+			targetMonth = monthList.get(index);
 		}
-		if(input == monthList.get(1).getMonthName()){
-			targetMonth = monthList.get(1);
-		}
-		if(input == monthList.get(2).getMonthName()){
-			targetMonth = monthList.get(2);
-		}
-		if(input == monthList.get(3).getMonthName()){
-			targetMonth = monthList.get(3);
-		}
-		if(input == monthList.get(4).getMonthName()){
-			targetMonth = monthList.get(4);
-		}
-		if(input == monthList.get(5).getMonthName()){
-			targetMonth = monthList.get(5);
-		}
-		if(input == monthList.get(6).getMonthName()){
-			targetMonth = monthList.get(6);
-		}
-		if(input == monthList.get(7).getMonthName()){
-			targetMonth = monthList.get(7);
-		}
-		if(input == monthList.get(8).getMonthName()){
-			targetMonth = monthList.get(8);
-		}
-		if(input == monthList.get(9).getMonthName()){
-			targetMonth = monthList.get(9);
-		}
-		if(input == monthList.get(10).getMonthName()){
-			targetMonth = monthList.get(10);
-		}
-		if(input == monthList.get(11).getMonthName()){
-			targetMonth = monthList.get(11);
-		}
+
 		List<Day> days = new ArrayList<Day>();
 
 		for(int i =1; i <= targetMonth.getNumberOfDays(); i++){

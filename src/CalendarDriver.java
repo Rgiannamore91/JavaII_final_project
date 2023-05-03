@@ -2,10 +2,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
+import java.util.Calendar;
 public class CalendarDriver{
 	public static void main (String[] args) {
-		int year = 2023;
+		int year = 2022;
 		String input = "December";
 		Month[] months = {
 			new Month(1, "January", 31),
@@ -37,11 +37,41 @@ public class CalendarDriver{
 
 		for(int i =1; i <= targetMonth.getNumberOfDays(); i++){
 			days.add(new Day(targetMonth.getMonthNumber(),i, year));
+
+		}
+		int dayOfMonth = 1;
+		for(Day day : days){
+			int weekDay = getWeekDay(year, targetMonth.getMonthNumber()-1, dayOfMonth);
+			System.out.println(getWeekDayString(weekDay) + " " + day);
+			dayOfMonth++;
 		}
 
-		for(Day day: days){
-			System.out.println(day);
-		}
 
 	} 
+	private static int getWeekDay(int year, int month, int date) {
+		Calendar calendar_object = Calendar.getInstance();
+		calendar_object.set(year, month, date);
+		return calendar_object.get(Calendar.DAY_OF_WEEK);
+	}
+	private static String getWeekDayString(int weekDay){
+		switch (weekDay){
+			case Calendar.SUNDAY:
+				return "Sunday";
+			case Calendar.MONDAY:
+				return "Monday";
+			case Calendar.TUESDAY:
+				return "Tuesday";
+			case Calendar.WEDNESDAY:
+				return "Wednesday";
+			case Calendar.THURSDAY:
+				return "Thursday";
+			case Calendar.FRIDAY:
+				return "Friday";
+			case Calendar.SATURDAY:
+				return "Saturday";
+			default:
+				return "";
+
+		}
+	}
 }

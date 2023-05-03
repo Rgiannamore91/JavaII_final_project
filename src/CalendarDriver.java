@@ -1,12 +1,11 @@
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Calendar;
 public class CalendarDriver{
 	public static void main (String[] args) {
 		int year = 2022;
 		String input = "December";
+		
 		Month[] months = {
 			new Month(1, "January", 31),
 			new Month(2, "February", 28),
@@ -21,8 +20,8 @@ public class CalendarDriver{
 			new Month(11, "November", 30),
 			new Month(12, "December", 31),
 		};
+		
 		List<Month> monthList = new ArrayList<Month>();
-
 		for(Month month : months){
 			monthList.add(month);
 		}
@@ -34,18 +33,19 @@ public class CalendarDriver{
 		}
 
 		List<Day> days = new ArrayList<Day>();
-
 		for(int i =1; i <= targetMonth.getNumberOfDays(); i++){
 			days.add(new Day(targetMonth.getMonthNumber(),i, year));
 
 		}
-		int dayOfMonth = 1;
-		for(Day day : days){
-			int weekDay = getWeekDay(year, targetMonth.getMonthNumber()-1, dayOfMonth);
-			System.out.println(getWeekDayString(weekDay) + " " + day);
+		
+		final int monthNumber = targetMonth.getMonthNumber()-1;
+		days.forEach(day->{
+			int dayOfMonth = day.getDate();
+			
+			int weekDay = getWeekDay(year, monthNumber, dayOfMonth);
+			System.out.println(getWeekDayString(weekDay) + " " + day); 
 			dayOfMonth++;
-		}
-
+		});
 
 	} 
 	private static int getWeekDay(int year, int month, int date) {

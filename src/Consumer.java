@@ -8,19 +8,16 @@ public class Consumer implements Runnable {
         this.sharedBuffer = sharedBuffer;
     }
 
-    // Search for the values and store the values in the sharedBuffer
+
     @Override
     public void run() {
-        String word = null;
-             // sleep 0 to 3 seconds, read value from buffer and add to sum
-             try {
-                Thread.sleep(generator.nextInt(3000));
-                word += sharedBuffer.blockingGet();
-               }
-             catch (InterruptedException exception) {
-                 Thread.currentThread().interrupt();
-                 }
-             }
- }
+        try {
+            sharedBuffer.blockingGet();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+} // end Consumer class
 
 

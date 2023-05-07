@@ -2,10 +2,10 @@ import java.security.SecureRandom;
 
 public class Producer implements Runnable {
     private static final SecureRandom generator = new SecureRandom();
-    private final Driver sharedBuffer;
+    private final Gui sharedBuffer;
     private int value;
 
-    public Producer(Driver sharedBuffer) {
+    public Producer(Gui sharedBuffer) {
         this.sharedBuffer = sharedBuffer;
     } // constructor
 

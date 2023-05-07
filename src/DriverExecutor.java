@@ -16,8 +16,8 @@ public class DriverExecutor {
         // create new thread pool
         ExecutorService executorService = Executors.newCachedThreadPool();
 
-        Driver sharedBuffer = new Driver();
-        Driver.SelectionScreen();
+        Gui sharedBuffer = new Gui();
+        Gui.SelectionScreen();
 
         // execute the Producer and Consumer
         executorService.execute(new Producer(sharedBuffer));

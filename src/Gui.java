@@ -7,7 +7,7 @@ import javax.swing.JComboBox;
 import java.util.Calendar;
 import java.util.List;
 
-public class Driver extends JFrame implements Buffer {
+public class Gui extends JFrame implements Buffer {
     private static String selectedValue;
     private static int year;
     private final int[] buffer = {-1, -1, -1};
@@ -15,7 +15,7 @@ public class Driver extends JFrame implements Buffer {
     private int writeIndex = 0;
     private int readIndex = 0;
 
-    public Driver() throws InterruptedException { // constructor
+    public Gui() throws InterruptedException { // constructor
     }
 
     public static void SelectionScreen() throws InterruptedException {
@@ -58,7 +58,7 @@ public class Driver extends JFrame implements Buffer {
         });
 
         try {
-            Driver put = new Driver();
+            Gui put = new Gui();
             put.blockingPut(year);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);

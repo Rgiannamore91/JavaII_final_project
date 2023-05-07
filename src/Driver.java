@@ -7,24 +7,23 @@ import javax.swing.JComboBox;
 import java.util.Calendar;
 import java.util.List;
 
-public class CircularBuffer extends JFrame implements Buffer {
-    private final int[] buffer = {-1,-1,-1};
-    private int occupiedBuffer = -0;
+public class Driver extends JFrame implements Buffer {
     private static String selectedValue;
     private static int year;
+    private final int[] buffer = {-1, -1, -1};
+    private int occupiedBuffer = -0;
     private int writeIndex = 0;
     private int readIndex = 0;
 
-    public CircularBuffer() throws InterruptedException {} // constructor
+    public Driver() throws InterruptedException { // constructor
+    }
 
     public static void SelectionScreen() throws InterruptedException {
         JFrame frame = new JFrame();
         frame.setTitle("Which month would you like to view?");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //int yearSelect = new JComboBox<>(new String[]{"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"});
-        JComboBox<String> yearSelect = new JComboBox<>(new String[] {"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"});
-        //JComboBox<Integer> yearSelect = new JComboBox<>(new Integer[] {2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030});
+        JComboBox<String> yearSelect = new JComboBox<>(new String[]{"2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"});
 
         JButton[] monthSelect = {
                 new JButton("January"),
@@ -42,8 +41,6 @@ public class CircularBuffer extends JFrame implements Buffer {
         };
 
 
-
-
         yearSelect.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -52,21 +49,17 @@ public class CircularBuffer extends JFrame implements Buffer {
                 }
 
 
-                yearSelect.setEnabled(false); // string
-                selectedValue = (String) yearSelect.getSelectedItem(); // string object become string
-                year = Integer.parseInt(selectedValue); // string become int
-
+                yearSelect.setEnabled(false);
+                selectedValue = (String) yearSelect.getSelectedItem();
+                year = Integer.parseInt(selectedValue);
 
             }
 
         });
 
         try {
-            CircularBuffer put = new CircularBuffer();
-            //put.blockingPut(Integer.parseInt(String.valueOf(year)));
+            Driver put = new Driver();
             put.blockingPut(year);
-            //put.blockingPut(Integer.parseInt(year));
-            //put.blockingPut(Integer.parseInt(String.valueOf(yearSelect)));
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
@@ -145,12 +138,9 @@ public class CircularBuffer extends JFrame implements Buffer {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        //return ;
     }
 
     private static void displayCalendar(String input, int year) {
-        // int year = 2022;
-        // String input = "December";
 
         Month[] months = {
                 new Month(1, "January", 31),
@@ -184,7 +174,7 @@ public class CircularBuffer extends JFrame implements Buffer {
 
         }
 
-
+        //GUI Framework
         JFrame CalenderView = new JFrame(String.format("%d %s Calendar", year, targetMonth.getMonthName()));
         CalenderView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         CalenderView.setLayout(new GridLayout(0, 7));
@@ -203,13 +193,13 @@ public class CircularBuffer extends JFrame implements Buffer {
         CalenderView.pack();
         CalenderView.setLocationRelativeTo(null);
         CalenderView.setVisible(true);
-    }
+    } // end DisplayCalendar method
 
     private static int getWeekDay(int year, int month, int date) {
         Calendar calendar_object = Calendar.getInstance();
         calendar_object.set(year, month, date);
         return calendar_object.get(Calendar.DAY_OF_WEEK);
-    }
+    } // end getWeekDay method
 
     private static String getWeekDayString(int weekDay) {
         switch (weekDay) {
@@ -231,43 +221,38 @@ public class CircularBuffer extends JFrame implements Buffer {
                 return "";
 
         }
-    }
+    } // end getWeekDayString method
 
     // Producer
     @Override
     public synchronized void blockingPut(int value) throws InterruptedException {
-        // while there is no element space available to write something new
+        // occupied buffer
         while (occupiedBuffer == buffer.length) {
-            wait();
+            wait(); // wait until the buffer is free
         }
 
         // year will be the first element in array
         buffer[writeIndex] = value;
         ++occupiedBuffer;
         ++writeIndex;
-        notifyAll(); // notify the other threads waiting for the buffer
+        notifyAll(); // notify threads waiting to read the buffer
     }
 
     // Consumer
     @Override
     public synchronized int blockingGet() throws InterruptedException {
-        // control the statement and decide if we can move on to month
-
-        // while there's nothing to be read
+        // unoccupied buffer
         while (occupiedBuffer == 0) {
-            wait();
+            wait(); // wait until the buffer is filled
         }
 
-        //otherwise take the value
+        // move on to next value by reading the current value
         int readValue = buffer[readIndex];
         --occupiedBuffer;
 
-
-        notifyAll();
+        notifyAll(); // notify threads waiting to write the buffer
         return readValue;
     }
-
-
 
 
 }
